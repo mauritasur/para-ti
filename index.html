@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Feliz mes, mi flaquita 💗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marck+Script&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c1:#FFF8FC;
+    --c2:#FDEBF4;
+    --c3:#F8D9E8;
+    --c4:#F4C9DE;
+    --c5:#EFB6D3;
+    --c6:#DFA8D8;
+    --ink:#6b4a5c;
+    --ink-soft:#9c7a8c;
+    --ease:cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{
+    width:100%;height:100%;
+    overflow:hidden;
+    font-family:'Quicksand',sans-serif;
+    color:var(--ink);
+    background:var(--c1);
+  }
+  #app{
+    position:relative;
+    width:100%;
+    height:100vh;
+    height:100dvh;
+    overflow:hidden;
+  }
+  .page{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:8vh 6vw;
+    text-align:center;
+    opacity:0;
+    transform:translateX(40px);
+    pointer-events:none;
+    transition:opacity 1000ms var(--ease), transform 1000ms var(--ease);
+    overflow:hidden;
+  }
+  .page.active{
+    opacity:1;
+    transform:translateX(0);
+    pointer-events:auto;
+    z-index:2;
+  }
+  .page.leaving{
+    opacity:0;
+    transform:translateX(-40px);
+    z-index:1;
+  }
+
+  .signature-heart{
+    position:absolute;
+    bottom:22px;
+    left:50%;
+    transform:translateX(-50%);
+    width:14px;
+    height:14px;
+    z-index:50;
+    opacity:.75;
+    filter:drop-shadow(0 0 6px rgba(239,182,211,.9));
+    animation:heartbeat 2.6s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .signature-heart svg{width:100%;height:100%;}
+  @keyframes heartbeat{
+    0%,100%{transform:translateX(-50%) scale(1);}
+    50%{transform:translateX(-50%) scale(1.28);}
+  }
+
+  .btn{
+    font-family:'Quicksand',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:.03em;
+    color:#fff;
+    background:linear-gradient(135deg,var(--c5),var(--c6));
+    border:none;
+    padding:14px 34px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 8px 24px -8px rgba(191,120,164,.55);
+    transition:transform 320ms var(--ease), box-shadow 320ms var(--ease);
+  }
+  .btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 30px -8px rgba(191,120,164,.65);}
+  .btn:active{transform:translateY(0) scale(.98);}
+  .btn:focus-visible{outline:2px solid var(--c6);outline-offset:3px;}
+
+  .eyebrow{
+    font-family:'Marck Script',cursive;
+    font-size:22px;
+    color:var(--c6);
+    margin-bottom:6px;
+    opacity:.9;
+  }
+  h1,h2{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    color:var(--ink);
+  }
+
+  /* ---------- PORTADA ---------- */
+  #portada{
+    background:linear-gradient(180deg,#FCC9D8 0%, #F8D9E8 35%, #FDEBF4 70%, #FFF8FC 100%);
+  }
+  .sky-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+  .star{
+    position:absolute;
+    width:3px;height:3px;
+    background:#fff;
+    border-radius:50%;
+    opacity:0;
+    animation:twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:0;}50%{opacity:.85;}}
+  .particle{
+    position:absolute;
+    width:5px;height:5px;
+    background:radial-gradient(circle,#fff 0%,rgba(255,255,255,0) 75%);
+    border-radius:50%;
+    animation:floatUp linear infinite;
+    opacity:.7;
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0) translateX(0);opacity:0;}
+    10%{opacity:.7;}
+    90%{opacity:.5;}
+    100%{transform:translateY(-90vh) translateX(20px);opacity:0;}
+  }
+  .cloud{
+    position:absolute;
+    opacity:.55;
+    filter:blur(1px);
+    animation:driftCloud 60s linear infinite;
+  }
+  @keyframes driftCloud{
+    0%{transform:translateX(-10vw);}
+    100%{transform:translateX(110vw);}
+  }
+  .portada-title{
+    position:relative;z-index:3;
+    font-size:clamp(30px,6vw,50px);
+    margin:2px 0 14px;
+  }
+  .portada-quote{
+    position:relative;z-index:3;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:clamp(15px,2.4vw,19px);
+    max-width:520px;
+    color:var(--ink-soft);
+    line-height:1.7;
+    margin-bottom:40px;
+  }
+
+  /* ---------- CARTA ---------- */
+  #carta{background:linear-gradient(180deg,#FFFBFD, var(--c1) 40%, var(--c2) 100%);}
+  .paper{
+    position:relative;z-index:3;
+    background:linear-gradient(180deg,#FFFEFF,#FFFAFD);
+    border-radius:22px;
+    max-width:600px;
+    width:100%;
+    max-height:74vh;
+    padding:38px 30px 30px;
+    box-shadow:0 30px 60px -20px rgba(191,150,175,.35), 0 0 0 1px rgba(255,255,255,.6) inset;
+    overflow-y:auto;
+    text-align:left;
+  }
+  .paper::-webkit-scrollbar{width:5px;}
+  .paper::-webkit-scrollbar-thumb{background:var(--c4);border-radius:10px;}
+  .paper h2{
+    font-family:'Marck Script',cursive;
+    font-size:30px;
+    font-weight:400;
+    text-align:center;
+    margin-bottom:18px;
+    color:var(--c6);
+  }
+  .paper p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:17px;
+    line-height:1.85;
+    color:#5e4453;
+    margin-bottom:16px;
+  }
+  .paper p.signoff{margin-bottom:2px;}
+  .paper .glow{
+    position:absolute;inset:0;
+    border-radius:22px;
+    background:radial-gradient(circle at 50% 0%, rgba(253,235,244,.9), transparent 60%);
+    pointer-events:none;
+  }
+  .carta-nav{margin-top:22px;position:relative;z-index:3;}
+
+  /* ---------- COSAS QUE AMO ---------- */
+  #cosas{background:linear-gradient(160deg,var(--c2),var(--c4) 60%,var(--c3));}
+  .flower{
+    position:absolute;
+    font-size:20px;
+    opacity:.8;
+    animation:driftFlower linear infinite;
+    pointer-events:none;
+  }
+  @keyframes driftFlower{
+    0%{transform:translateY(-10vh) rotate(0deg);opacity:0;}
+    10%{opacity:.85;}
+    90%{opacity:.6;}
+    100%{transform:translateY(100vh) rotate(240deg);opacity:0;}
+  }
+  .corner-deco{
+    position:absolute;font-size:26px;opacity:.5;pointer-events:none;
+  }
+  .list-tender{
+    position:relative;z-index:3;
+    list-style:none;
+    display:flex;flex-direction:column;gap:16px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(19px,3vw,25px);
+    color:var(--ink);
+  }
+
+  /* ---------- MOMENTOS ---------- */
+  #momentos{background:linear-gradient(160deg,#FBE4EE,var(--c4) 55%,#EFC0D8);}
+  .dust{
+    position:absolute;width:3px;height:3px;border-radius:50%;
+    background:rgba(255,244,250,.9);
+    animation:driftDust ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes driftDust{
+    0%,100%{transform:translate(0,0);opacity:.3;}
+    50%{transform:translate(10px,-16px);opacity:.8;}
+  }
+  .timeline{
+    position:relative;z-index:3;
+    display:flex;flex-direction:column;gap:20px;
+    text-align:left;
+    max-width:480px;
+  }
+  .timeline-item{
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .timeline-num{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:22px;
+    color:var(--c6);
+    min-width:28px;
+  }
+  .timeline-item p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(17px,2.6vw,21px);
+    color:var(--ink);
+    line-height:1.5;
+  }
+
+  /* ---------- COSITAS ---------- */
+  #cositas{background:linear-gradient(180deg,var(--c1),#FFF3F9);}
+  .mini-heart{
+    position:absolute;
+    font-size:14px;
+    color:var(--c5);
+    opacity:0;
+    animation:fadeHeart ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes fadeHeart{
+    0%,100%{opacity:0;transform:scale(.6);}
+    50%{opacity:.55;transform:scale(1);}
+  }
+  .list-cositas{
+    position:relative;z-index:3;
+    list-style:none;
+    display:flex;flex-direction:column;gap:14px;
+    font-family:'Quicksand',sans-serif;
+    font-weight:500;
+    font-size:clamp(15px,2.4vw,18px);
+    color:var(--ink);
+  }
+
+  /* ---------- ANHELOS ---------- */
+  #anhelos{background:linear-gradient(180deg,#F7E4EF,#EADFF3 55%,#E7E6F5);}
+  .cloud-soft{
+    position:absolute;
+    width:150px;height:60px;
+    background:#fff;
+    border-radius:100px;
+    opacity:.65;
+    filter:blur(2px);
+    transition:transform 600ms var(--ease), opacity 600ms var(--ease);
+    animation:driftSlow 50s linear infinite;
+  }
+  .cloud-soft:hover, .cloud-soft.touched{
+    transform:scale(1.12) translateY(-6px);
+    opacity:.85;
+  }
+  @keyframes driftSlow{
+    0%{transform:translateX(-15vw);}
+    100%{transform:translateX(115vw);}
+  }
+  .anhelos-list{
+    position:relative;z-index:3;
+    list-style:none;
+    display:flex;flex-direction:column;gap:14px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(18px,2.8vw,22px);
+    color:var(--ink);
+    margin-bottom:10px;
+  }
+  .anhelos-final{
+    position:relative;z-index:3;
+    font-family:'Marck Script',cursive;
+    font-size:24px;
+    color:var(--c6);
+    margin-top:6px;
+  }
+
+  /* ---------- FINAL ---------- */
+  #final{background:linear-gradient(180deg,#4B3A55 0%, #7A5A78 35%, #C98FAE 70%, #F4C9DE 100%);}
+  #final h2, #final p{color:#FFF6FB;}
+  .star-final{
+    position:absolute;width:2.5px;height:2.5px;background:#fff;border-radius:50%;
+    animation:twinkle 3.5s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .final-quote{
+    position:relative;z-index:3;
+    font-family:'Marck Script',cursive;
+    font-size:clamp(24px,4.5vw,34px);
+    margin-top:18px;
+    color:#FFF0F8;
+  }
+
+  section-content{display:block;}
+  .stack{position:relative;z-index:3;max-width:560px;width:100%;}
+
+  @media (max-width:600px){
+    .paper{max-height:68vh;padding:28px 20px 24px;}
+    .page{padding:6vh 5vw;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- 1. PORTADA -->
+  <section class="page active" id="portada">
+    <div class="sky-layer" id="portada-sky"></div>
+    <div class="signature-heart">
+      <svg viewBox="0 0 32 29"><path d="M16 27S2 18 2 9.5 8 1 12.5 1 16 5 16 5s1-4 3.5-4S30 1 30 9.5 16 27 16 27z" fill="#EFB6D3"/></svg>
+    </div>
+    <div class="eyebrow" style="position:relative;z-index:3;">para ti</div>
+    <h1 class="portada-title">Feliz mes, mi flaquita 💗</h1>
+    <p class="portada-quote">"Hay cosas que nunca logro decir tan bien con palabras... entonces decidí hacerte un pequeño lugar donde pudiera dejar mi corazón."</p>
+    <button class="btn" style="position:relative;z-index:3;" onclick="nextPage()">Abrir mi corazón 💗</button>
+  </section>
+
+  <!-- 2. CARTA -->
+  <section class="page" id="carta">
+    <div class="sky-layer" id="carta-sky"></div>
+    <div class="paper" id="paper">
+      <div class="glow"></div>
+      <h2>Flaquita 💗</h2>
+      <p>Antes de cualquier otra cosa, quería empezar por lo que tengo en el corazón desde ayer.</p>
+      <p>Sé que te hice sentir muy mal, y eso es algo que me pesa muchísimo. No te escribo esto para convencerte de que dejes de sentirte herida, ni para quitarle importancia a lo que pasó. Entiendo que mis palabras tuvieron un impacto en ti, y de verdad lamento de verdad haber tocado un tema que te hizo sentir de esa manera.</p>
+      <p>Lo único que me duele profundamente es pensar que por un momento hayas sentido que yo te veo como una cualquiera, o que pudiera juzgarte por tu pasado. Porque esa imagen está completamente alejada de la mujer que yo conozco y de la cual me enamoré.</p>
+      <p>Nunca has sido eso, para mí eres la niña que amo, la mujer con la que quiero seguir compartiendo el resto de mi vida, esa persona que logró ocupar un lugar enorme en mi corazón sin siquiera darse cuenta.</p>
+      <p>Si pudiera regresar ese momento, lo haría sin pensarlo dos veces. No porque quiera borrar una discusión, sino porque jamás quise hacerte sentir menos, mucho menos hacerte creer que pienso algo tan feo de ti.</p>
+      <p>También quisiera decirte algo con mucha sinceridad. A veces siento que nuestras discusiones nos hacen olvidar quiénes somos cuando estamos bien. Las dos sabemos que ayer estábamos riéndonos, hablándonos bonito, siendo solo nosotras, y en cuestión de un momento todo cambió. Yo reconozco que tengo cosas por mejorar, a veces hablo sin pensar, hago bromas donde no debo o digo cosas de una manera que termina lastimándote. No quiero dejar de trabajar en eso, porque tú y nuestra relación valen completamente todo el esfuerzo.</p>
+      <p>Pero también quiero abrirte un pedacito de mi corazón. otras veces siento que, cuando nos equivocamos, nos cuesta mucho mirar más allá del error. Yo intento entender cómo te sientes, intento escuchar lo que te dolió y aprender de ello, y mi mayor deseo es que poco a poco también podamos escuchar la intención que había detrás de nuestras palabras, incluso cuando nos equivoquemos, y no porque el impacto deje de importar, sino porque creo que el amor también consiste en intentar comprender al otro, especialmente cuando conocemos su corazón.</p>
+      <p>Yo nunca he querido ser alguien que te haga daño, lo único que he querido desde que llegaste a mi vida ha sido hacerte sentir amada y segura. Y si alguna vez mis palabras consiguen el efecto contrario, créeme que voy a seguir esforzándome por aprender de esos errores, pero también sueño con que podamos construir una relación donde las dos podamos hablar, escucharnos, comprendernos y crecer sin sentir que estamos una contra la otra, porque para mí nunca ha sido una competencia por ver quién tiene la razón.</p>
+      <p>Y ahora sí quiero dejar esa parte a un ladito, aunque sea por un momento, porque, por encima de cualquier discusión, hoy sigue siendo un día especial para mí. Hoy cumplimos otro mes, y no quería que este día se fuera sin recordarte todo lo bonito que también existe entre nosotras.</p>
+      <p>Feliz mes, mi flaquita. 💗</p>
+      <p>No sé si alguna vez has llegado a dimensionar lo mucho que significas para mí, pero ojalá algún día puedas verte a través de mis ojos, porque yo no veo solamente a mi novia; veo a una mujer increíblemente fuerte, inteligente, capaz de hacerme sonreír incluso en los días más pesados y de convertirse poco a poco, en uno de los lugares donde más tranquila me he sentido.</p>
+      <p>Y en serio que, gracias por cada llamada que terminaba haciéndome olvidar un mal día, por cada momento donde no hacía falta decir mucho porque simplemente estar contigo ya era suficiente. Gracias por dejarme conocer tu lado más tierno, tus ocurrencias jaja, tus enojos, tus miedos, tus sueños y hasta esas pequeñas manías que con el tiempo terminé queriendo tanto.</p>
+      <p>Me gusta cómo eres cuando te emocionas hablando de algo que te gusta, cuando te ríes de verdad, cuando te vuelves bromista jaja, cuando me haces sentir que, aunque el mundo sea un caos, todavía existe un lugar donde puedo estar tranquila.</p>
+      <p>También amo la manera en que, incluso sin darte cuenta, has cambiado muchas cosas en mí. Me has enseñado a querer aún más bonito, a ilusionarme con un futuro a tu lado :,), y a descubrir que el amor también está en los detalles más pequeños.</p>
+      <p>No quiero una relación perfecta, quiero una relación donde podamos equivocarnos sin dejar de ver el amor que existe detrás de nuestros errores, que podemos llegar a escúchanos más, que aprendamos a comprendernos incluso cuando pensemos diferente, y la verdad una de las cosas que más quiero es que los problemas sean algo que enfrentemos juntas, y no algo que nos enfrente la una contra la otra, porque, aunque a veces no lo parezca, mi intención nunca ha sido ganarte una discusión.</p>
+      <p>Ojalá todavía nos queden muchísimos meses juntas, muchas llamadas, momentos lindos, abrazos, fotos, besitos, etc.</p>
+      <p>Gracias por regalarme otro mes de tu vida. Y, pase lo que pase hoy, quiero que nunca olvides algo, te amo tanto, con un amor que aunque se equivoca, aprende mucho e intenta hacerlo mejor cada día y que, incluso en los días difíciles, sigue eligiéndote.</p>
+      <p>Feliz mes, mi niña chiquita.</p>
+      <p class="signoff">Con todo mi corazóncito,</p>
+      <p class="signoff">Maura. 💗</p>
+    </div>
+    <div class="carta-nav">
+      <button class="btn" onclick="nextPage()">Continuar →</button>
+    </div>
+  </section>
+
+  <!-- 3. COSAS QUE AMO DE TI -->
+  <section class="page" id="cosas">
+    <div class="sky-layer" id="cosas-sky"></div>
+    <div class="eyebrow" style="position:relative;z-index:3;">cosas que amo de ti</div>
+    <h2 style="position:relative;z-index:3;font-size:clamp(24px,4vw,34px);margin-bottom:26px;">Un pedacito de por qué te amo</h2>
+    <ul class="list-tender">
+      <li>🌸 Esos hermosos ojos</li>
+      <li>🎀 Tu sonrisa</li>
+      <li>💗 Tus besitos</li>
+      <li>✨ Toda tu</li>
+    </ul>
+    <button class="btn" style="position:relative;z-index:3;margin-top:36px;" onclick="nextPage()">Siguiente →</button>
+  </section>
+
+  <!-- 4. MOMENTOS -->
+  <section class="page" id="momentos">
+    <div class="sky-layer" id="momentos-sky"></div>
+    <div class="eyebrow" style="position:relative;z-index:3;">momentos que llevo en mi corazoncito</div>
+    <h2 style="position:relative;z-index:3;font-size:clamp(24px,4vw,34px);margin-bottom:26px;">📸 Nuestro pequeño álbum</h2>
+    <div class="timeline">
+      <div class="timeline-item"><span class="timeline-num">1.</span><p>La primera vez que te vi</p></div>
+      <div class="timeline-item"><span class="timeline-num">2.</span><p>Cuando pude abrazarte por primera vez</p></div>
+      <div class="timeline-item"><span class="timeline-num">3.</span><p>El día que te pedí ser mi noviecita</p></div>
+      <div class="timeline-item"><span class="timeline-num">4.</span><p>Pasar mucho tiempo contigo</p></div>
+      <div class="timeline-item"><span class="timeline-num">5.</span><p>Cuando logramos dormir juntitas</p></div>
+    </div>
+    <button class="btn" style="position:relative;z-index:3;margin-top:36px;" onclick="nextPage()">Siguiente →</button>
+  </section>
+
+  <!-- 5. PEQUEÑAS COSITAS -->
+  <section class="page" id="cositas">
+    <div class="sky-layer" id="cositas-sky"></div>
+    <div class="eyebrow" style="position:relative;z-index:3;">las pequeñas cositas</div>
+    <h2 style="position:relative;z-index:3;font-size:clamp(24px,4vw,34px);margin-bottom:26px;">♡ Lo pequeño que se siente enorme</h2>
+    <ul class="list-cositas">
+      <li>♡ Las llamadas que nunca quiero terminar</li>
+      <li>♡ Los buenos días</li>
+      <li>♡ Cuando te ríes por bobadas</li>
+      <li>♡ Los besitos</li>
+      <li>♡ Cuando me haces sentir en casita</li>
+      <li>♡ Cuando te pones de enojona jajaj</li>
+      <li>♡ Cuando hablamos hasta quedarnos dormiditas</li>
+    </ul>
+    <button class="btn" style="position:relative;z-index:3;margin-top:36px;" onclick="nextPage()">Siguiente →</button>
+  </section>
+
+  <!-- 6. ANHELOS -->
+  <section class="page" id="anhelos">
+    <div class="sky-layer" id="anhelos-sky"></div>
+    <div class="eyebrow" style="position:relative;z-index:3;">una de las cosas que más anhelo</div>
+    <h2 style="position:relative;z-index:3;font-size:clamp(24px,4vw,34px);margin-bottom:22px;">☁️ Lo que sueño para nosotras</h2>
+    <ul class="anhelos-list">
+      <li>☁️ Tener nuestra casita</li>
+      <li>☁️ Una familia a tu lado</li>
+      <li>☁️ Una niña que sea idéntica a ti</li>
+      <li>☁️ Tener nuestra casita</li>
+      <li>☁️ Amarnos mucho</li>
+    </ul>
+    <p class="anhelos-final">Y si todo eso fuera mucho pedir…<br>Me conformo con compartir una vida contigo.</p>
+    <button class="btn" style="position:relative;z-index:3;margin-top:34px;" onclick="nextPage()">Final →</button>
+  </section>
+
+  <!-- 7. FINAL -->
+  <section class="page" id="final">
+    <div class="sky-layer" id="final-sky"></div>
+    <div class="eyebrow" style="position:relative;z-index:3;color:#FADCEA;">cierre</div>
+    <h2 style="position:relative;z-index:3;font-size:clamp(26px,4.5vw,38px);">Con mucho amor pa' ti,</h2>
+    <p class="final-quote">M💗</p>
+  </section>
+
+</div>
+
+<script id="core">
+  const pages = ['portada','carta','cosas','momentos','cositas','anhelos','final'];
+  let currentPage = 0;
+
+  function goToPage(index){
+    if(index < 0 || index >= pages.length || index === currentPage) return;
+    const current = document.getElementById(pages[currentPage]);
+    const next = document.getElementById(pages[index]);
+
+    current.classList.add('leaving');
+    current.classList.remove('active');
+
+    requestAnimationFrame(()=>{
+      next.classList.add('active');
+    });
+
+    setTimeout(()=>{ current.classList.remove('leaving'); }, 1100);
+
+    currentPage = index;
+  }
+  function nextPage(){ goToPage(currentPage + 1); }
+
+  /* ---------- ambient generators ---------- */
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+
+  function buildStars(containerId, count){
+    const c = document.getElementById(containerId);
+    for(let i=0;i<count;i++){
+      const s = document.createElement('div');
+      s.className='star';
+      s.style.left = rand(0,100)+'%';
+      s.style.top = rand(0,55)+'%';
+      s.style.animationDelay = rand(0,4)+'s';
+      s.style.animationDuration = rand(3,6)+'s';
+      c.appendChild(s);
+    }
+  }
+  function buildParticles(containerId, count){
+    const c = document.getElementById(containerId);
+    for(let i=0;i<count;i++){
+      const p = document.createElement('div');
+      p.className='particle';
+      p.style.left = rand(0,100)+'%';
+      p.style.bottom = '-10px';
+      p.style.animationDelay = rand(0,12)+'s';
+      p.style.animationDuration = rand(10,18)+'s';
+      c.appendChild(p);
+    }
+  }
+  function buildClouds(containerId, count){
+    const c = document.getElementById(containerId);
+    const widths=[70,100,130];
+    for(let i=0;i<count;i++){
+      const cl = document.createElement('div');
+      const w = widths[i % widths.length] + rand(-10,20);
+      cl.style.position='absolute';
+      cl.style.top = rand(5,30)+'%';
+      cl.style.left = rand(-20,20)+'%';
+      cl.style.width = w+'px';
+      cl.style.height = (w*0.4)+'px';
+      cl.style.background = 'rgba(255,255,255,0.85)';
+      cl.style.borderRadius='100px';
+      cl.className='cloud';
+      cl.style.animationDuration = rand(45,80)+'s';
+      cl.style.animationDelay = rand(-40,0)+'s';
+      c.appendChild(cl);
+    }
+  }
+  function buildFlowers(containerId, count){
+    const c = document.getElementById(containerId);
+    const emojis=['🌸','🌷','🌺'];
+    for(let i=0;i<count;i++){
+      const f = document.createElement('div');
+      f.className='flower';
+      f.textContent = emojis[Math.floor(rand(0,emojis.length))];
+      f.style.left = rand(0,100)+'%';
+      f.style.animationDelay = rand(0,14)+'s';
+      f.style.animationDuration = rand(12,20)+'s';
+      c.appendChild(f);
+    }
+    const corners=[['10px','10px'],['10px','','10px',''],];
+    const decoPositions=[
+      {top:'14px',left:'14px'},{top:'14px',right:'14px'},
+      {bottom:'14px',left:'14px'},{bottom:'14px',right:'14px'}
+    ];
+    decoPositions.forEach(pos=>{
+      const d = document.createElement('div');
+      d.className='corner-deco';
+      d.textContent='✿';
+      Object.assign(d.style,pos);
+      c.appendChild(d);
+    });
+  }
+  function buildDust(containerId, count){
+    const c = document.getElementById(containerId);
+    for(let i=0;i<count;i++){
+      const d = document.createElement('div');
+      d.className='dust';
+      d.style.left = rand(0,100)+'%';
+      d.style.top = rand(0,100)+'%';
+      d.style.animationDuration = rand(3,6)+'s';
+      d.style.animationDelay = rand(0,3)+'s';
+      c.appendChild(d);
+    }
+  }
+  function buildMiniHearts(containerId, count){
+    const c = document.getElementById(containerId);
+    for(let i=0;i<count;i++){
+      const h = document.createElement('div');
+      h.className='mini-heart';
+      h.textContent='♡';
+      h.style.left = rand(5,95)+'%';
+      h.style.top = rand(5,90)+'%';
+      h.style.animationDuration = rand(3,5)+'s';
+      h.style.animationDelay = rand(0,5)+'s';
+      c.appendChild(h);
+    }
+  }
+  function buildSoftClouds(containerId, count){
+    const c = document.getElementById(containerId);
+    for(let i=0;i<count;i++){
+      const cl = document.createElement('div');
+      cl.className='cloud-soft';
+      cl.style.top = rand(10,70)+'%';
+      cl.style.left = rand(-20,10)+'%';
+      cl.style.animationDuration = rand(40,70)+'s';
+      cl.style.animationDelay = rand(-30,0)+'s';
+      cl.addEventListener('mouseenter', ()=> cl.classList.add('touched'));
+      cl.addEventListener('mouseleave', ()=> cl.classList.remove('touched'));
+      cl.addEventListener('touchstart', ()=> cl.classList.add('touched'));
+      c.appendChild(cl);
+    }
+  }
+  function buildFinalStars(containerId, count){
+    const c = document.getElementById(containerId);
+    for(let i=0;i<count;i++){
+      const s = document.createElement('div');
+      s.className='star-final';
+      s.style.left = rand(0,100)+'%';
+      s.style.top = rand(0,75)+'%';
+      s.style.animationDelay = rand(0,4)+'s';
+      s.style.animationDuration = rand(2.5,5)+'s';
+      c.appendChild(s);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    buildStars('portada-sky', 25);
+    buildParticles('portada-sky', 14);
+    buildClouds('portada-sky', 3);
+
+    buildParticles('carta-sky', 5);
+
+    buildFlowers('cosas-sky', 8);
+
+    buildDust('momentos-sky', 22);
+
+    buildMiniHearts('cositas-sky', 10);
+
+    buildSoftClouds('anhelos-sky', 5);
+
+    buildFinalStars('final-sky', 35);
+  });
+</script>
+</body>
+</html>
